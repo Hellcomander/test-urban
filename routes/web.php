@@ -12,7 +12,23 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::get('/', function () {
-    return view('welcome');
+    if (!auth()->check()) {
+        return redirect('login');
+    }
+
+    return redirect('home');
+});
+
+
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+Route::middleware('auth')->get('/home', function () {
+    return view('home.home');
 });
