@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,15 +21,12 @@ Route::get('/', function () {
     return redirect('home');
 });
 
-
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+Route::post('/register', [UserController::class, 'registrar'])->name('register');
 
-Route::middleware('auth')->get('/home', function () {
+Route::middleware('auth:cliente')->get('/home', function () {
     return view('home.home');
-});
+})->name('home');

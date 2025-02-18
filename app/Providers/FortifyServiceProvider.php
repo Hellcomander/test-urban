@@ -36,10 +36,6 @@ class FortifyServiceProvider extends ServiceProvider
             return view('auth.login');
         });
 
-        Fortify::registerView(function () {
-            return view('auth.register');
-        });
-
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
@@ -63,6 +59,7 @@ class FortifyServiceProvider extends ServiceProvider
             }
 
             if ($user && Hash::check($request->password, $user->password)) {
+                auth()->guard($request->rol)->login($user);
                 session(['role' => $request->rol]);
                 return $user;
             }
@@ -73,7 +70,7 @@ class FortifyServiceProvider extends ServiceProvider
         RateLimiter::for('login', function (Request $request) {
             $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
-            return Limit::perMinute(5)->by($throttleKey);
+            return Limit::perMinute(9000)->by($throttleKey);
         });
 
         RateLimiter::for('two-factor', function (Request $request) {

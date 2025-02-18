@@ -12,6 +12,9 @@ class Vendedor extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $table = 'vendedores';
+    protected $guard = 'vendedor';
+
     /**
      * The attributes that are mass assignable.
      *
