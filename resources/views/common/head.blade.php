@@ -14,4 +14,16 @@
     .btn {
         pointer-events: auto;
     }
+
+    .btn:hover {
+        background-color: #CCCC00 !important;
+    }
+
+    .icon-large {
+        font-size: 10em !important;
+    }
+
+    .hide-element {
+        display: none !important;
+    }
 </style>

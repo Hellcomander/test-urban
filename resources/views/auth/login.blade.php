@@ -133,17 +133,6 @@
     $(document).ready(() => {
         $('#radio-cliente').prop('checked', true).trigger('change');
         $('#radio-cliente-registro').prop('checked', true).trigger('change');
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            statusCode: {
-                401: function() {
-                    location.reload();
-                }
-            }
-        });
     });
 
     function registrarUsuario() {
@@ -169,7 +158,6 @@
                     $("#loadingModal").modal("hide")
                     let errors = error.responseJSON.errors;
 
-                    // Si quieres mostrar todos los errores, puedes recorrer el objeto 'errors'
                     let errorMessages = '';
                     for (let field in errors) {
                         errorMessages += `<p> -${errors[field].join(', ')}</p>`;

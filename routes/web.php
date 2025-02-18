@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,11 +24,24 @@ Route::get('/', function () {
 });
 
 Route::get('/login', function () {
-    return view('auth.login');
+    if (!auth()->check()) {
+        return view('auth.login');
+    }
+    return redirect('home');
 })->name('login');
+
+Route::get('logout', function () {
+    auth()->logout();
+    Session()->flush();
+
+    return redirect('login');
+})->name('logout');
 
 Route::post('/register', [UserController::class, 'registrar'])->name('register');
 
-Route::middleware('auth:cliente')->get('/home', function () {
-    return view('home.home');
-})->name('home');
+Route::middleware('auth:cliente')->get('/home', [HomeController::class, 'index'])->name('home');
+Route::middleware('auth:vendedor')->get('/tiendas', [StoreController::class, 'index'])->name('tiendas');
+Route::middleware('auth:vendedor')->get('/tienda', [StoreController::class, 'show'])->name('tienda');
+Route::middleware('auth:vendedor')->post('/tienda', [StoreController::class, 'store'])->name('tienda.store');
+Route::middleware('auth:vendedor')->put('/tienda/{id}', [StoreController::class, 'update'])->name('tienda.update');
+Route::middleware('auth:vendedor')->delete('/tienda/{id}', [StoreController::class, 'delete'])->name('tienda.delete');

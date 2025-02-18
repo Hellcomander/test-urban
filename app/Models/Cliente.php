@@ -48,4 +48,14 @@ class Cliente extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+
+    /**
+     * Get all of the carrito for the Cliente
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function carrito()
+    {
+        return $this->hasMany(Carrito::class, 'id_cliente', 'id');
+    }
 }
